@@ -1,6 +1,7 @@
 import pytest
 
 from app.quiz.models import Pack, Question
+from app.quiz.si_importer.pack_loader import load
 from app.quiz.tests.factories import QuestionFactory, TagFactory, PackFactory, AnswerFactory
 
 
@@ -35,4 +36,3 @@ async def answer(async_session):
 
     answer = await AnswerFactory.create()
     yield answer
-

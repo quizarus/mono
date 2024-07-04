@@ -12,6 +12,7 @@ class BaseEntityManager:
 
     def __init__(self, db: Session = Depends(get_db)):
         self.db = db
+        self.obj = None
 
     async def get(self, pk: int, relations: list[str] | None = None, *args, **kwargs) -> BaseModel:
         stmt = select(self.model).where(self.model.id == pk)
@@ -30,8 +31,13 @@ class BaseEntityManager:
         objects = result.unique().scalars().all()
         return objects
 
+    async def commit(self):
+        await self.db.commit()
+        await self.db.refresh(self.obj)
+
     async def create(self, commit: bool = True, *args, **kwargs) -> BaseModel:
         obj = self.model()
+        self.obj = obj
         obj, attrs = await self.__update_m2m_relations(obj, kwargs)
 
         for k, v in attrs.items():
@@ -40,8 +46,8 @@ class BaseEntityManager:
         self.db.add(obj)
 
         if commit:
-            await self.db.commit()
-            await self.db.refresh(obj)
+            await self.commit()
+
         return obj
 
     async def update(self, pk: int, commit: bool = True, *args, **kwargs) -> BaseModel:

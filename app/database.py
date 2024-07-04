@@ -1,4 +1,6 @@
 # from sqlalchemy import create_engine
+import contextlib
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.config import settings
@@ -12,8 +14,6 @@ SQLALCHEMY_DATABASE_URI = \
     f":{settings.DATABASE_PORT}" \
     f"/{settings.POSTGRES_DB}"
 
-TEST_DB_URI = 'postgresql+asyncpg://postgres:postgres@localhost/test_db'
-
 
 def get_engine(db_uri: str, debug: bool = False) -> AsyncEngine:
     return create_async_engine(
@@ -26,6 +26,7 @@ engine = get_engine(SQLALCHEMY_DATABASE_URI, debug=True)
 session = async_sessionmaker(engine, expire_on_commit=False)
 
 
+# @contextlib.asynccontextmanager
 async def get_db():
     db = session()
     try:

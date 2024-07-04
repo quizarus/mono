@@ -1,16 +1,8 @@
+import uuid
 
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-
-
 from app.models import Base, BaseModel
-
-
-class MyModel(BaseModel):
-    __tablename__ = 'my_model'
-
-    name: Mapped[str] = mapped_column(String(255))
-
 
 pack_and_tag_association = Table(
     "question_pack__tag__association",
@@ -32,6 +24,7 @@ class Pack(BaseModel):
 
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(Text())
+    icon: Mapped[str | None] = mapped_column(String(255))
     questions: Mapped[list['Question']] = relationship("Question", back_populates='pack')
 
     tags: Mapped[list["Tag"]] = relationship(secondary=pack_and_tag_association, back_populates="packs", lazy='joined')
@@ -68,18 +61,3 @@ class Tag(BaseModel):
     name: Mapped[str] = mapped_column(String(255))
     packs: Mapped[list["Pack"]] = relationship(secondary=pack_and_tag_association, back_populates="tags")
     questions: Mapped[list["Question"]] = relationship(secondary=question_and_tag_association, back_populates="tags")
-
-
-
-# class PackTagAssociation(Base):
-#     __tablename__ = 'question_pack__tag__association'
-#
-#     pack_id: Mapped[int] = mapped_column(ForeignKey("question_pack.id"), primary_key=True)
-#     tag_id: Mapped[int] = mapped_column(ForeignKey("question_tag.id"), primary_key=True)
-#
-#
-# class QuestionTagAssociation(Base):
-#     __tablename__ = 'question__tag__association'
-#
-#     question_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     tag_id: Mapped[int] = mapped_column(Integer, primary_key=True)

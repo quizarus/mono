@@ -5,14 +5,14 @@ import factory
 from factory.alchemy import SESSION_PERSISTENCE_FLUSH, SESSION_PERSISTENCE_COMMIT
 from factory.builder import StepBuilder, parse_declarations, BuildStep
 
-from app.database import TEST_DB_URI
+from app.database import SQLALCHEMY_DATABASE_URI
 from conftest import AsyncTestSessionManager
 
 
 class AsyncFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     class Meta:
-        sqlalchemy_session = AsyncTestSessionManager(TEST_DB_URI).session
+        sqlalchemy_session = AsyncTestSessionManager(SQLALCHEMY_DATABASE_URI).session
         sqlalchemy_session_persistence = SESSION_PERSISTENCE_COMMIT
 
     @classmethod

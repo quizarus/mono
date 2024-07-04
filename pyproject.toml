@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+urllib3 = "<2.0"
 fastapi = "^0.95.1"
 aiosqlite = "^0.19.0"
 asyncpg = "^0.27.0"
@@ -22,7 +23,11 @@ pytest-asyncio = "^0.21.0"
 httpx = "^0.24.0"
 pytest-factoryboy = "^2.5.1"
 uvicorn = "^0.22.0"
-fastapi-utils = { git = "https://github.com/dasieneous/fastapi-utils.git"}
+xmltodict = "^0.13.0"
+minio = "^7.1.14"
+pytest-env = "^0.8.1"
+python-multipart = "^0.0.6"
+python-magic = "^0.4.27"
 
 
 
